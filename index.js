@@ -91,9 +91,7 @@ app.delete('/api/quotes/:id', checkJwt, asyncHandler(async (req, res, next) => {
   res.sendStatus(200)
 }))
 
-app.use((_, res) => {
-  res.sendFile(join(__dirname, 'client', 'build', 'index.html'));
-});
+app.use((_, res) => res.sendFile(join(__dirname, 'client', 'build', 'index.html')))
 
 app.use((err, req, res, next) => {
   console.error(err.stack)

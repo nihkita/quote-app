@@ -30,7 +30,7 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/public-quotes" exact component={PublicQuotes} />
             <PrivateRoute path="/profile" component={Profile} />
-            <PrivateRoute exact path="/my-quotes" component={MyQuotes} />
+            <PrivateRoute path="/my-quotes" exact component={MyQuotes} />
             <PrivateRoute path="/my-quotes/add" component={MyQuotesEdit} />
             <PrivateRoute path="/my-quotes/edit/:id" component={MyQuotesEdit} />
           </Switch>
