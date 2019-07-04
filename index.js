@@ -6,7 +6,7 @@ const jwksRsa = require('jwks-rsa')
 const bodyParser = require('body-parser')
 const { join } = require('path')
 const mongoose = require('mongoose')
-const authConfig = require('./client/src/auth_config.json')
+const config = require('./client/src/config.json')
 require('dotenv').config()
 
 const Schema = new mongoose.Schema({
@@ -31,10 +31,10 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`
+    jwksUri: `https://${config.auth.domain}/.well-known/jwks.json`
   }),
-  audience: authConfig.audience,
-  issuer: `https://${authConfig.domain}/`,
+  audience: config.auth.audience,
+  issuer: `https://${config.auth.domain}/`,
   algorithm: ['RS256']
 })
 
