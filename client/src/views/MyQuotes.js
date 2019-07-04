@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { faTimes, faEdit } from '@fortawesome/free-solid-svg-icons'
 import QuoteList from '../components/QuoteList'
 import { useAuth0 } from '../react-auth0-spa'
-import { faTimes, faEdit } from '@fortawesome/free-solid-svg-icons'
 
 const MyQuotes = props => {
   const { getTokenSilently } = useAuth0()
@@ -23,12 +23,12 @@ const MyQuotes = props => {
     },
     controls: [
       {
-        buttonClass: 'btn-success',
+        buttonColor: 'success',
         icon: faEdit,
         cb: (quoteId: string) => props.history.push(`/my-quotes/edit/${quoteId}`)
       },
       {
-        buttonClass: 'btn-danger',
+        buttonColor: 'danger',
         icon: faTimes,
         cb: async (quoteId: string) => {
           await deleteQuote(quoteId)

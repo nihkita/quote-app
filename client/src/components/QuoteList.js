@@ -3,13 +3,16 @@ import debounce from 'lodash.debounce'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import {
+  Button,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  FormGroup,
   Input,
   InputGroup,
-  InputGroupButtonDropdown
+  InputGroupButtonDropdown,
+  Label,
 } from 'reactstrap'
 
 const QuoteList = props => {
@@ -38,13 +41,13 @@ const QuoteList = props => {
   React.useEffect(() => {
     if (loading) return
     setPage(1)
-    setRefresh(!refresh)
+    setRefresh(r => !r)
   }, [props.refresh, pageSize, searchValue, sortField])
 
   React.useEffect(() => {
     if (!searchValue) return
     setPage(1)
-    setRefresh(!refresh)
+    setRefresh(r => !r)
   }, [searchField])
 
   React.useEffect(() => {
@@ -90,7 +93,7 @@ const QuoteList = props => {
           </InputGroupButtonDropdown>
           <Input type="search" placeholder="Search" onChange={e => handleSearch(e.target.value)} />
         </InputGroup>
-        <div className="form-group">
+        <FormGroup>
           <UncontrolledDropdown isOpen={isSortDropdownOpen} toggle={() => setSortDropdownOpen(!isSortDropdownOpen)}>
             <DropdownToggle caret>
               Sort By: {sortField.text}
@@ -101,7 +104,7 @@ const QuoteList = props => {
             ))}
             </DropdownMenu>
           </UncontrolledDropdown>
-        </div>
+        </FormGroup>
       </div>
       {loading ? (
         <div className="text-center">
@@ -118,9 +121,9 @@ const QuoteList = props => {
                   <footer className="blockquote-footer">{item.authorName || 'Anonymous'}</footer>
                 </blockquote>
                 {(props.config.controls || []).map((control, i) => (
-                  <button key={i} className={`mx-2 btn ${control.buttonClass || 'btn-secondary'}`} onClick={() => control.cb(item._id)}>
+                  <Button key={i} color={control.buttonColor || 'secondary'} className='mx-2' onClick={() => control.cb(item._id)}>
                     <FontAwesomeIcon icon={control.icon} />
-                  </button>
+                  </Button>
                 ))}
               </li>
             )}
@@ -128,18 +131,18 @@ const QuoteList = props => {
           <hr/>
           <div className="form-inline">
             <div className="d-flex align-items-center">
-              <label htmlFor="pageSize" className="mb-0">Rows</label>
-              <select className="form-control ml-3" id="pageSize" value={pageSize} onChange={handlePageSizeChange}>
-                <option value="1">1</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-              </select>
+              <Label for="pageSize" className="mb-0">Rows</Label>
+              <Input type="select" className="ml-3" id="pageSize" value={pageSize} onChange={handlePageSizeChange}>
+                <option>1</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+              </Input>
             </div>
             <div className="flex-grow-1"></div>
             <span className="ml-4">Page {page} of {pageCount}</span>
-            <button className="btn btn-secondary ml-4" onClick={handlePrev} disabled={page === 1}>Previous</button>
-            <button className="btn btn-secondary ml-2" onClick={handleNext} disabled={page === pageCount}>Next</button>
+            <Button className="ml-4" onClick={handlePrev} disabled={page === 1}>Previous</Button>
+            <Button className="ml-2" onClick={handleNext} disabled={page === pageCount}>Next</Button>
           </div>
         </React.Fragment>
       )}

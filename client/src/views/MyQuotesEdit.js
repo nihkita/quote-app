@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth0 } from '../react-auth0-spa'
+import { Form, Button, FormGroup, Label, Input, FormFeedback } from 'reactstrap'
 
 const MyQuotesEdit = props => {
   const { getTokenSilently } = useAuth0()
@@ -52,26 +53,22 @@ const MyQuotesEdit = props => {
   return (
     <React.Fragment>
       <h1>{qid ? 'Edit' : 'Add'} Quote</h1>
-      <form className="needs-validation" noValidate onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="authorName">Author Name</label>
-          <input type="text" className="form-control" id="authorName" name="authorName" value={quote.authorName} onChange={handleInputChange} required />
-          <div className="invalid-feedback">
-            Please provide an author.
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="text">Text</label>
-          <textarea className="form-control" id="text" name="text" value={quote.text} onChange={handleInputChange} required></textarea>
-          <div className="invalid-feedback">
-            Please provide quote text.
-          </div>
-        </div>
+      <Form className="needs-validation" noValidate onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label for="authorName">Author Name</Label>
+          <Input type="text" id="authorName" name="authorName" value={quote.authorName} onChange={handleInputChange} required />
+          <FormFeedback>Please provide an author.</FormFeedback>
+        </FormGroup>
+        <FormGroup>
+          <Label for="text">Text</Label>
+          <Input type="textarea" id="text" name="text" value={quote.text} onChange={handleInputChange} required />
+          <FormFeedback>Please provide quote text.</FormFeedback>
+        </FormGroup>
         <div className="d-flex justify-content-end">
           <Link className="btn btn-secondary" to="/my-quotes">Cancel</Link>
-          <button type="submit" className="btn btn-primary ml-2">Submit</button>
+          <Button type="submit" color="primary" className="ml-2">Submit</Button>
         </div>
-      </form>
+      </Form>
     </React.Fragment>
   )
 }
