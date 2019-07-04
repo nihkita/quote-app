@@ -50,7 +50,7 @@ const MyQuotesEdit = props => {
   }
 
   return (
-    <main className="container my-3">
+    <React.Fragment>
       <h1>{qid ? 'Edit' : 'Add'} Quote</h1>
       <form className="needs-validation" noValidate onSubmit={handleSubmit}>
         <div className="form-group">
@@ -72,7 +72,7 @@ const MyQuotesEdit = props => {
           <button type="submit" className="btn btn-primary ml-2">Submit</button>
         </div>
       </form>
-    </main>
+    </React.Fragment>
   )
 }
 

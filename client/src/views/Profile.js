@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Row, Col } from "reactstrap";
 
 import Highlight from "../components/Highlight";
 import Loading from "../components/Loading";
@@ -13,7 +13,7 @@ const Profile = () => {
   }
 
   return (
-    <Container className="mb-5">
+    <React.Fragment>
       <Row className="align-items-center profile-header">
         <Col md={2}>
           <img
@@ -30,7 +30,7 @@ const Profile = () => {
       <Row>
         <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
       </Row>
-    </Container>
+    </React.Fragment>
   );
 };
 

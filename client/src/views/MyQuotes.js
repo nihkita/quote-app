@@ -39,13 +39,13 @@ const MyQuotes = props => {
   }
 
   return (
-    <div className="container my-3">
+    <React.Fragment>
       <div className="d-flex align-items-center mb-4">
         <h1>My Quotes</h1>
         <Link className="btn btn-primary ml-auto" to="/my-quotes/add">Add Quote</Link>
       </div>
       <QuoteList config={config} refresh={refresh} />
-    </div>
+    </React.Fragment>
   )
 }
 
