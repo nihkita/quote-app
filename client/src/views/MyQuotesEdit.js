@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth0 } from '../react-auth0-spa'
 import { Form, Button, FormGroup, Label, Input, FormFeedback } from 'reactstrap'
+import Loading from '../components/Loading'
 
 const MyQuotesEdit = props => {
   const { getTokenSilently } = useAuth0()
   const qid = props.match.params.id
+  const [loading, setLoading] = React.useState(!!qid)
   const [quote, setQuote] = React.useState({
     authorName: '',
     text: ''
@@ -14,9 +16,16 @@ const MyQuotesEdit = props => {
 
   React.useEffect(() => {
     if (!qid) return
-    const fetchQuote = async () => setQuote(await getQuote(qid))
+    const fetchQuote = async () => {
+      const token = await getTokenSilently()
+      const config = { headers: { Authorization: `Bearer ${token}` } }
+      const quote = (await axios(`/api/quotes/${qid}`, config)).data
+      if (!quote) return props.history.push('/my-quotes')
+      setQuote(quote)
+      setLoading(false)
+    }
     fetchQuote()
-  }, [qid])
+  }, [qid, getTokenSilently, props.history])
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -35,12 +44,6 @@ const MyQuotesEdit = props => {
     await axios.post('/api/quotes', quote, config)
   }
 
-  const getQuote = async id => {
-    const token = await getTokenSilently()
-    const config = { headers: { Authorization: `Bearer ${token}` } }
-    return (await axios(`/api/quotes/${id}`, config)).data
-  }
-
   const handleSubmit = async e => {
     e.preventDefault()
     const form = e.target
@@ -49,6 +52,8 @@ const MyQuotesEdit = props => {
     qid ? await updateQuote() : await addQuote()
     props.history.push('/my-quotes')
   }
+
+  if (loading) return <Loading/>
 
   return (
     <React.Fragment>
