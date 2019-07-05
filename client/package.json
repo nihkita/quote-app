@@ -17,6 +17,7 @@
     "bootstrap": "^4.3.1",
     "highlight.js": "^9.15.6",
     "lodash.debounce": "^4.0.8",
+    "lodash.isequal": "^4.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",

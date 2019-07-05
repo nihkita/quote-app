@@ -14,8 +14,10 @@ import {
   InputGroupButtonDropdown,
   Label,
 } from 'reactstrap'
+import { useCompare } from '../utils/hooks'
 
 const QuoteList = props => {
+  const { refresh } = props
   const sortFields = [
     { text: 'Author Asc', value: 'authorName' },
     { text: 'Author Desc', value: '-authorName' },
@@ -28,7 +30,6 @@ const QuoteList = props => {
   ]
   const [isSortDropdownOpen, setSortDropdownOpen] = React.useState(false)
   const [isSearchDropdownOpen, setSearchDropdownOpen] = React.useState(false)
-  const [refresh, setRefresh] = React.useState(false)
   const [data, setData] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [page, setPage] = React.useState(1)
@@ -38,19 +39,15 @@ const QuoteList = props => {
   const [searchField, setSearchField] = React.useState(searchFields[0])
   const [sortField, setSortField] = React.useState(sortFields[0])
 
-  React.useEffect(() => {
-    if (loading) return
-    setPage(1)
-    setRefresh(r => !r)
-  }, [props.refresh, pageSize, searchValue, sortField])
+  const resetPageRequired = useCompare({refresh, pageSize, searchValue, sortField})
+  const searchFieldChanged = useCompare({searchField})
 
   React.useEffect(() => {
-    if (!searchValue) return
-    setPage(1)
-    setRefresh(r => !r)
-  }, [searchField])
-
-  React.useEffect(() => {
+    if (searchFieldChanged) {
+      if (!searchValue) return
+      setPage(1)
+    }
+    if (resetPageRequired) setPage(1)
     const fetchData = async () => {
       setLoading(true)
       const searchStr = searchValue ? `${searchField.value}=${searchValue}`: ''
@@ -64,18 +61,12 @@ const QuoteList = props => {
       setLoading(false)
     }
     fetchData()
-  }, [refresh])
+  }, [searchFieldChanged, resetPageRequired, searchValue, searchField, sortField, page, pageSize, props.config])
 
   const handlePageSizeChange = e => setPageSize(parseInt(e.target.value))
   const handleSearch = debounce(text => setSearchValue(text), 500)
-  const handlePrev = () => {
-    setPage(page - 1)
-    setRefresh(!refresh)
-  }
-  const handleNext = () => {
-    setPage(page + 1)
-    setRefresh(!refresh)
-  }
+  const handlePrev = () => setPage(page - 1)
+  const handleNext = () => setPage(page + 1)
 
   return (
     <React.Fragment>
