@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth0 } from '../react-auth0-spa'
@@ -8,13 +8,13 @@ import Loading from '../components/Loading'
 const MyQuotesEdit = props => {
   const { getTokenSilently } = useAuth0()
   const qid = props.match.params.id
-  const [loading, setLoading] = React.useState(!!qid)
-  const [quote, setQuote] = React.useState({
+  const [loading, setLoading] = useState(!!qid)
+  const [quote, setQuote] = useState({
     authorName: '',
     text: ''
   })
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!qid) return
     const fetchQuote = async () => {
       const token = await getTokenSilently()
@@ -56,7 +56,7 @@ const MyQuotesEdit = props => {
   if (loading) return <Loading/>
 
   return (
-    <React.Fragment>
+    <Fragment>
       <h1>{qid ? 'Edit' : 'Add'} Quote</h1>
       <Form className="needs-validation" noValidate onSubmit={handleSubmit}>
         <FormGroup>
@@ -74,7 +74,7 @@ const MyQuotesEdit = props => {
           <Button type="submit" color="primary" className="ml-2">Submit</Button>
         </div>
       </Form>
-    </React.Fragment>
+    </Fragment>
   )
 }
 

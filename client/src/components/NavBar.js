@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { NavLink as RouterNavLink } from "react-router-dom"
 
 import {
@@ -20,7 +20,7 @@ import {
 import { useAuth0 } from '../react-auth0-spa'
 
 const NavBar = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0()
 
   const logoutWithRedirect = () =>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import debounce from 'lodash.debounce'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -28,21 +28,21 @@ const QuoteList = props => {
     { text: 'Author', value: 'authorName' },
     { text: 'Text', value: 'text' }
   ]
-  const [isSortDropdownOpen, setSortDropdownOpen] = React.useState(false)
-  const [isSearchDropdownOpen, setSearchDropdownOpen] = React.useState(false)
-  const [data, setData] = React.useState([])
-  const [loading, setLoading] = React.useState(true)
-  const [page, setPage] = React.useState(1)
-  const [pageSize, setPageSize] = React.useState(10)
-  const [pageCount, setPageCount] = React.useState(1)
-  const [searchValue, setSearchValue] = React.useState('')
-  const [searchField, setSearchField] = React.useState(searchFields[0])
-  const [sortField, setSortField] = React.useState(sortFields[0])
+  const [isSortDropdownOpen, setSortDropdownOpen] = useState(false)
+  const [isSearchDropdownOpen, setSearchDropdownOpen] = useState(false)
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [pageCount, setPageCount] = useState(1)
+  const [searchValue, setSearchValue] = useState('')
+  const [searchField, setSearchField] = useState(searchFields[0])
+  const [sortField, setSortField] = useState(sortFields[0])
 
   const resetPageRequired = useCompare({refresh, pageSize, searchValue, sortField})
   const searchFieldChanged = useCompare({searchField})
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (searchFieldChanged) {
       if (!searchValue) return
       setPage(1)
@@ -69,7 +69,7 @@ const QuoteList = props => {
   const handleNext = () => setPage(page + 1)
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div className="form-row">
         <InputGroup className="col-md-6 mb-3">
           <InputGroupButtonDropdown addonType="prepend" isOpen={isSearchDropdownOpen} toggle={() => setSearchDropdownOpen(!isSearchDropdownOpen)}>
@@ -103,7 +103,7 @@ const QuoteList = props => {
           <h3>Loading Results...</h3>
         </div>
       ) : (
-        <React.Fragment>
+        <Fragment>
           <ul className="list-unstyled">
             {data.map((item, i) =>
               <li key={i} className="d-flex align-items-start">
@@ -135,9 +135,9 @@ const QuoteList = props => {
             <Button className="ml-4" onClick={handlePrev} disabled={page === 1}>Previous</Button>
             <Button className="ml-2" onClick={handleNext} disabled={page === pageCount}>Next</Button>
           </div>
-        </React.Fragment>
+        </Fragment>
       )}
-    </React.Fragment>
+    </Fragment>
   )
 }
 
